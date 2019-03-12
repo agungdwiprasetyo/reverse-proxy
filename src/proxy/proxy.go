@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/agungdwiprasetyo/api.agungdwiprasetyo.com/src/shared"
+	"github.com/agungdwiprasetyo/reverse-proxy/src/shared"
 )
 
 type Proxy struct {
