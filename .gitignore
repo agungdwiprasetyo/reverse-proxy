@@ -1,1 +1,4 @@
 api.agungdwiprasetyo.com
+vendor/
+bin
+go.sum

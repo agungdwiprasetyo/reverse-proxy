@@ -1,0 +1,3 @@
+package: github.com/agungdwiprasetyo/api.agungdwiprasetyo.com
+import:
+- package: github.com/agungdwiprasetyo/go-utils

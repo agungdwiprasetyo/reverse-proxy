@@ -1,1 +1,1 @@
-# Pengendali API
+# Pengendali API (API Gateway)
