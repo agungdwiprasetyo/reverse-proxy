@@ -6,7 +6,7 @@
             "host": "http://localhost:8888"
         },
         {
-            "root": "/wedding/",
+            "root": "/weddings/",
             "host": "http://localhost:8008"
         },
         {
