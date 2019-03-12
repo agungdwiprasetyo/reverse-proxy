@@ -8,6 +8,10 @@
         {
             "root": "/wedding/",
             "host": "http://localhost:8008"
+        },
+        {
+            "root": "/pcb/user/",
+            "host": "http://localhost:6000"
         }
     ]
 }
