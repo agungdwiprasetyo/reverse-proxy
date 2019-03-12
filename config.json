@@ -1,0 +1,13 @@
+{
+    "gatewayPort": "3000",
+    "proxy": [
+        {
+            "root": "/linebot/",
+            "host": "http://localhost:8888"
+        },
+        {
+            "root": "/wedding/",
+            "host": "http://localhost:8008"
+        }
+    ]
+}

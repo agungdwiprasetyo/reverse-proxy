@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"net/http"
 	"reflect"
+	"runtime"
 
 	utils "github.com/agungdwiprasetyo/go-utils"
 )
@@ -68,6 +69,7 @@ func NewHTTPResponse(code int, message string, params ...interface{}) HTTPRespon
 func (resp *httpResponse) JSON(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Origin", "Agung Dwi Prasetyo")
+	w.Header().Set("Go-Version", runtime.Version())
 	w.WriteHeader(resp.Code)
 	json.NewEncoder(w).Encode(resp)
 }
@@ -76,6 +78,7 @@ func (resp *httpResponse) JSON(w http.ResponseWriter) {
 func (resp *httpResponse) XML(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/xml")
 	w.Header().Set("Origin", "Agung Dwi Prasetyo")
+	w.Header().Set("Go-Version", runtime.Version())
 	w.WriteHeader(resp.Code)
 	xml.NewEncoder(w).Encode(resp)
 }
