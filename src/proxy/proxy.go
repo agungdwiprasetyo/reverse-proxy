@@ -27,6 +27,11 @@ func (l *Proxy) Handle(w http.ResponseWriter, r *http.Request) {
 		r.URL.Path = r.URL.Path[i+len(l.root):]
 	}
 
+	// handle CORS
+	if r.Method == http.MethodOptions {
+		return
+	}
+
 	l.proxy.Transport = new(shared.Transport)
 	l.proxy.ServeHTTP(w, r)
 
