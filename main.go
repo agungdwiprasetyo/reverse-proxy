@@ -12,6 +12,7 @@ import (
 	"github.com/agungdwiprasetyo/api.agungdwiprasetyo.com/src/proxy"
 	"github.com/agungdwiprasetyo/api.agungdwiprasetyo.com/src/shared"
 	utils "github.com/agungdwiprasetyo/go-utils"
+	"github.com/agungdwiprasetyo/go-utils/debug"
 )
 
 // Config app
@@ -42,6 +43,7 @@ func main() {
 	for _, pr := range config.Proxy {
 		prx := proxy.NewProxy(pr.Root, pr.Host)
 		http.HandleFunc(pr.Root, prx.Handle)
+		debug.Println(pr.Root, pr.Host)
 	}
 
 	// Handle root gateway
