@@ -12,6 +12,7 @@ import (
 	"github.com/agungdwiprasetyo/go-utils/debug"
 )
 
+// Transport model
 type Transport struct {
 }
 
@@ -19,11 +20,13 @@ type monitoring struct {
 	UserAgent string
 	Method    string
 	Path      string
-	Duration  int64
+	Duration  string
 }
 
+// RoundTrip is the ability to execute a single HTTP transaction
 func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 	start := time.Now()
+
 	response, err := http.DefaultTransport.RoundTrip(request)
 	if err != nil {
 		me := utils.NewMultiError()
@@ -37,7 +40,7 @@ func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 
 		bg, _ := json.Marshal(respBody)
 		response = &http.Response{
-			Status:        "200 OK",
+			Status:        "502 Bad Gateway",
 			StatusCode:    http.StatusBadGateway,
 			Proto:         "HTTP/1.1",
 			ProtoMajor:    1,
@@ -45,7 +48,7 @@ func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 			Body:          ioutil.NopCloser(bytes.NewBuffer(bg)),
 			ContentLength: int64(len(bg)),
 			Request:       request,
-			Header:        http.Header{"Content-Type": []string{"application/json"}}, //make(http.Header, 0),
+			Header:        http.Header{"Content-Type": []string{"application/json"}},
 		}
 	}
 
@@ -55,7 +58,7 @@ func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 		UserAgent: request.UserAgent(),
 		Method:    request.Method,
 		Path:      request.URL.Path,
-		Duration:  elapsed.Nanoseconds(),
+		Duration:  fmt.Sprintf("%v", elapsed),
 	}
 
 	debug.PrintJSON(monit)
