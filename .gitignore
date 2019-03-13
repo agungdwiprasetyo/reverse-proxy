@@ -3,3 +3,4 @@ vendor/
 bin
 go.sum
 config.json
+gin-bin
