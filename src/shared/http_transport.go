@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/agungdwiprasetyo/go-utils"
-	"github.com/agungdwiprasetyo/go-utils/debug"
+	"github.com/agungdwiprasetyo/reverse-proxy/helper"
 )
 
 // Transport model
@@ -52,16 +53,19 @@ func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 		}
 	}
 
-	elapsed := time.Since(start)
+	end := time.Now()
 
-	var monit = monitoring{
-		UserAgent: request.UserAgent(),
-		Method:    request.Method,
-		Path:      request.URL.Path,
-		Duration:  fmt.Sprintf("%v", elapsed),
-	}
-
-	debug.PrintJSON(monit)
+	statusColor := helper.ColorForStatus(response.StatusCode)
+	methodColor := helper.ColorForMethod(request.Method)
+	fmt.Fprintf(os.Stdout, "%s [PROXY] %s : %v | %s %3d %s | %13v | %15s | %s %-7s %s %s\n",
+		helper.Magenta, helper.Reset,
+		time.Now().Format("2006/01/02 - 15:04:05"),
+		statusColor, response.StatusCode, helper.Reset,
+		end.Sub(start),
+		request.RemoteAddr,
+		methodColor, request.Method, helper.Reset,
+		request.RequestURI,
+	)
 
 	return response, nil
 }

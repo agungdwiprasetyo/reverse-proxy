@@ -2,3 +2,4 @@ reverse-proxy
 vendor/
 bin
 go.sum
+config.json

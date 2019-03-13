@@ -1,0 +1,13 @@
+{
+    "gatewayPort": 3000,
+    "proxy": [
+        {
+            "root": "/myapp",
+            "host": "http://localhost:8000"
+        }
+    ],
+    "key": {
+        "username": "username",
+        "password": "password"
+    }
+}

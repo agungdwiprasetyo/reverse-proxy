@@ -1,59 +1,49 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
-	utils "github.com/agungdwiprasetyo/go-utils"
+	"github.com/agungdwiprasetyo/reverse-proxy/config"
+	"github.com/agungdwiprasetyo/reverse-proxy/helper"
+	"github.com/agungdwiprasetyo/reverse-proxy/middleware"
+	"github.com/agungdwiprasetyo/reverse-proxy/src/handler"
 	"github.com/agungdwiprasetyo/reverse-proxy/src/proxy"
-	"github.com/agungdwiprasetyo/reverse-proxy/src/shared"
 )
-
-// Config app
-type Config struct {
-	GatewayPort string `json:"gatewayPort"`
-	Proxy       []struct {
-		Root string `json:"root"`
-		Host string `json:"host"`
-	} `json:"proxy"`
-}
 
 func main() {
 	appPath, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(helper.StringRed(err))
 	}
 
-	b, err := ioutil.ReadFile(fmt.Sprintf("%s/config.json", appPath))
-	if err != nil {
-		log.Fatal(err)
-	}
+	// init config
+	conf := config.Init(appPath)
 
-	var config Config
-	if err := json.Unmarshal(b, &config); err != nil {
-		log.Fatal(err)
-	}
+	// register all proxy from config
+	for _, pr := range conf.Proxy {
+		pr.Root = fmt.Sprintf("/%s/", strings.Trim(pr.Root, "/"))
 
-	for _, pr := range config.Proxy {
 		prx := proxy.NewProxy(pr.Root, pr.Host)
 		http.HandleFunc(pr.Root, prx.Handle)
+
+		fmt.Fprintf(os.Stdout, "%s[GATEWAY]%s %s\t%s\t %s\n",
+			helper.White, helper.Reset, helper.StringRed(fmt.Sprintf(":%d%s", conf.GatewayPort, pr.Root)),
+			helper.StringYellow("|===>"), helper.StringGreen(pr.Host),
+		)
 	}
 
 	// Handle root gateway
-	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		multiError := utils.NewMultiError()
-		multiError.Append("authorization", fmt.Errorf("invalid signature"))
+	root := middleware.BasicAuth(handler.Root, conf.Key.Username, conf.Key.Password)
+	http.HandleFunc("/", middleware.Logger(root))
 
-		response := shared.NewHTTPResponse(http.StatusUnauthorized, "failed", multiError)
-		response.JSON(w)
-	})
-
-	port := fmt.Sprintf(":%s", config.GatewayPort)
+	port := fmt.Sprintf(":%d", conf.GatewayPort)
 	log.Println("Server running on port", port)
-	log.Fatal(http.ListenAndServe(port, nil))
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatal(helper.StringRed(err))
+	}
 }
