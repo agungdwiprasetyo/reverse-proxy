@@ -31,18 +31,18 @@ func (t *Transport) RoundTrip(request *http.Request) (*http.Response, error) {
 	response, err := http.DefaultTransport.RoundTrip(request)
 	if err != nil {
 		me := utils.NewMultiError()
-		me.Append("server", fmt.Errorf("Server is not reachable. Server not working. Try again later"))
+		me.Append("service", fmt.Errorf("Service is not reachable. Service not working. Try again later"))
 
 		respBody := httpResponse{
-			Code:    http.StatusBadGateway,
-			Message: "Bad Gateway",
+			Code:    http.StatusServiceUnavailable,
+			Message: "Service Unavailable",
 			Errors:  me.ToMap(),
 		}
 
 		bg, _ := json.Marshal(respBody)
 		response = &http.Response{
-			Status:        "502 Bad Gateway",
-			StatusCode:    http.StatusBadGateway,
+			Status:        "503 Service Unavailable",
+			StatusCode:    http.StatusServiceUnavailable,
 			Proto:         "HTTP/1.1",
 			ProtoMajor:    1,
 			ProtoMinor:    1,
