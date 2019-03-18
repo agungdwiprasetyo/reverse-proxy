@@ -1,14 +1,21 @@
 language: go
 sudo: required
 go:
-  - 1.8.5
+  - 1.11.x
+  - 1.10
 
-env:
-  global:
-    - CODECOV_TOKEN="f2862ccb-ee5a-4cde-9173-960a54dc1dc5"
+addons:
+  apt:
+    sources:
+    - sourceline: ppa:masterminds/glide
+    packages:
+    - glide
 
 before_install:
   - export PATH=$PATH:$HOME/.local/bin
+
+install:
+  - glide install
 
 script:
   - make test

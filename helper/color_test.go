@@ -95,3 +95,23 @@ func TestColorForMethod(t *testing.T) {
 		})
 	}
 }
+
+func TestColorString(t *testing.T) {
+	t.Run("Test String Red", func(t *testing.T) {
+		if got := StringRed("String Red"); got != "\x1b[31;1mString Red\x1b[0m" {
+			t.Errorf("StringRed() = %v, want %v", got, "String Red")
+		}
+	})
+
+	t.Run("Test String Green", func(t *testing.T) {
+		if got := StringGreen("String Green"); got != "\x1b[32;1mString Green\x1b[0m" {
+			t.Errorf("StringGreen() = %v, want %v", got, "String Green")
+		}
+	})
+
+	t.Run("Test String Yellow", func(t *testing.T) {
+		if got := StringYellow("String Yellow"); got != "\x1b[33;1mString Yellow\x1b[0m" {
+			t.Errorf("StringYellow() = %v, want %v", got, "String Yellow")
+		}
+	})
+}
