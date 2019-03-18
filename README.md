@@ -1,5 +1,9 @@
 # Pengendali API (Reverse proxy for API Gateway)
 
+[![Build Status](https://travis-ci.org/agungdwiprasetyo/reverse-proxy.svg?branch=master)](https://travis-ci.org/agungdwiprasetyo/reverse-proxy)
+[![codecov](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy/branch/master/graph/badge.svg)](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy)
+[![golang](https://img.shields.io/badge/GoLang-v1.11-green.svg?logo=google)](https://golang.org/doc/devel/release.html#go1.11)
+
 A http tool for reverse proxy like nginx
 
 ### Use
