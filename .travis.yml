@@ -1,0 +1,18 @@
+language: go
+sudo: required
+go:
+  - 1.8.5
+
+env:
+  global:
+    - CODECOV_TOKEN="f2862ccb-ee5a-4cde-9173-960a54dc1dc5"
+
+before_install:
+  - export PATH=$PATH:$HOME/.local/bin
+
+script:
+  - make test
+  - make cover
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
