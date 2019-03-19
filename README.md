@@ -4,6 +4,8 @@
 [![codecov](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy/branch/master/graph/badge.svg)](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy)
 [![golang](https://img.shields.io/badge/GoLang-v1.11-green.svg?logo=google)](https://golang.org/doc/devel/release.html#go1.11)
 
+[![Coverage Graph](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy/branch/master/graphs/commits.svg)](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy)
+
 A http tool for reverse proxy like nginx
 
 ### Use
