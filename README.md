@@ -6,7 +6,7 @@
 
 [![Coverage Graph](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy/branch/master/graphs/commits.svg)](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy)
 
-A http tool for reverse proxy like nginx
+A http tool for reverse proxy like nginx **(NO Framework, just write in PURE Go)**
 
 ### Use
 * Install Golang and get dependencies
