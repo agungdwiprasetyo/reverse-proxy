@@ -1,17 +1,22 @@
-.PHONY : build test cover
+.PHONY : build test docker
 
-TEST_PACKAGES = ./helper
+PACKAGES = $(shell go list ./... | grep -v -e . | tr '\n' ',')
+GCP_PROJECT_ID = mantul-tenan
 
 build:
 	go build -o bin
 
-test:
-	$(foreach pkg, $(TEST_PACKAGES),\
-	go test $(pkg);)
+docker: build
+	docker build -t reverse-proxy:latest .
 
-cover:
+kubernetes:
+	docker tag reverse-proxy:latest gcr.io/$(GCP_PROJECT_ID)/reverse-proxy:latest
+	docker push gcr.io/$(GCP_PROJECT_ID)/reverse-proxy:latest
+	kubectl set image deployment/reverse-proxy reverse-proxy-sha256=gcr.io/$(GCP_PROJECT_ID)/reverse-proxy:latest
+
+test: build
 	if [ -f coverage.txt ]; then rm coverage.txt; fi;
-	$(foreach pkg, $(TEST_PACKAGES), \
-	go test -coverprofile=coverage.out -covermode=atomic $(pkg); \
-	tail -n +2 coverage.out >> coverage.txt;)
-	rm coverage.out
+	@echo ">> running unit test and calculate coverage"
+	@go test ./... -cover -coverprofile=coverage.txt -covermode=set -coverpkg=$(PACKAGES)
+	@go tool cover -func=coverage.txt
+
