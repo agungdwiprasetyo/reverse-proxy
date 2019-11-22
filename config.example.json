@@ -1,6 +1,6 @@
 {
-    "gatewayPort": 3000,
-    "proxy": [
+    "gateway_port": 3000,
+    "services": [
         {
             "root": "/myapp",
             "host": "http://localhost:8000"

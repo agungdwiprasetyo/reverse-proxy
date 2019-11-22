@@ -4,3 +4,4 @@ bin
 go.sum
 config.json
 coverage.txt
+deploy

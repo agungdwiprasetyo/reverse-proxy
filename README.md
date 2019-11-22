@@ -2,17 +2,16 @@
 
 [![Build Status](https://travis-ci.org/agungdwiprasetyo/reverse-proxy.svg?branch=master)](https://travis-ci.org/agungdwiprasetyo/reverse-proxy)
 [![codecov](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy/branch/master/graph/badge.svg)](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy)
-[![golang](https://img.shields.io/badge/GoLang-v1.11-green.svg?logo=google)](https://golang.org/doc/devel/release.html#go1.11)
+[![golang](https://img.shields.io/badge/GoLang-v1.12-green.svg?logo=google)](https://golang.org/doc/devel/release.html#go1.12)
 
 [![Coverage Graph](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy/branch/master/graphs/commits.svg)](https://codecov.io/gh/agungdwiprasetyo/reverse-proxy)
 
 A http tool for reverse proxy like nginx **(NO Framework, just write in PURE Go)**
 
 ### Use
-* Install Golang and get dependencies
+* Install Golang
 ```sh
 $ brew install golang
-$ glide install
 ```
 
 * Build app
@@ -25,13 +24,13 @@ $ make build
 $ cp config.example.json config.json
 ```
 
-* Add your proxy in `config.json`
+* Add your services in `config.json`
 ```json
 {
-    "proxy": [
+    "services": [
         {
-            "root": "[root for proxy, example: /myapp/]",
-            "host": "[host proxy, example: http://localhost:8000]"
+            "root": "[root for service, example: /myapp]",
+            "host": "[host service, example: http://localhost:8000]"
         }
     ]
 }
@@ -40,7 +39,7 @@ $ cp config.example.json config.json
 * Set app port
 ```json
 {
-    "gatewayPort": 3000,
+    "gateway_port": 3000,
 }
 ```
 
@@ -51,7 +50,7 @@ $ ./bin
 Server running on port :3000
 ```
 
-In nginx, the configuration for adding proxy is like this:
+In nginx, configuration for adding proxy like this:
 ```
 location /myapp/ {
     proxy_pass http://127.0.0.1:8000;

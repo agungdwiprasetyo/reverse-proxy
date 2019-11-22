@@ -24,16 +24,16 @@ func main() {
 	// init config
 	conf := config.Init(appPath)
 
-	// register all proxy from config
-	for _, pr := range conf.Proxy {
-		pr.Root = fmt.Sprintf("/%s/", strings.Trim(pr.Root, "/"))
+	// register all service proxy from config
+	for _, service := range conf.Services {
+		service.Root = fmt.Sprintf("/%s/", strings.Trim(service.Root, "/"))
 
-		prx := proxy.NewProxy(pr.Root, pr.Host)
-		http.HandleFunc(pr.Root, prx.Handle)
+		prx := proxy.NewProxy(service.Root, service.Host)
+		http.HandleFunc(service.Root, prx.Handle)
 
-		fmt.Fprintf(os.Stdout, "%s[GATEWAY]%s %s\t%s\t %s\n",
-			helper.White, helper.Reset, helper.StringRed(fmt.Sprintf(":%d%s", conf.GatewayPort, pr.Root)),
-			helper.StringYellow("|===>"), helper.StringGreen(pr.Host),
+		fmt.Fprintf(os.Stdout, "%s[GATEWAY]%s %s %s %s\n",
+			helper.White, helper.Reset, helper.StringRed(fmt.Sprintf(":%d%s", conf.GatewayPort, service.Root)),
+			helper.StringYellow("|===>"), helper.StringGreen(service.Host),
 		)
 	}
 
