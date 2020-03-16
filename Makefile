@@ -24,3 +24,5 @@ test: build
 	@go test ./... -cover -coverprofile=coverage.txt -covermode=set -coverpkg=$(PACKAGES)
 	@go tool cover -func=coverage.txt
 
+run-container:
+	docker run --name=$(APP_NAME) --network="host" -d -v ~/reverse-proxy/config.json:/usr/app/config.json -p 3000:3000 $(APP_NAME)
