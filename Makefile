@@ -9,7 +9,7 @@ IMAGE_TAG = $(ts)
 build:
 	go build -o bin
 
-docker: build
+docker:
 	docker build -t $(APP_NAME):latest .
 
 deploy:
